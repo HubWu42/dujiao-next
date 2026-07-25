@@ -18,19 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # ---- Fullstack: pull admin + user frontend source from HubWu42 forks ----
-      - name: Checkout admin
-        uses: actions/checkout@v4
-        with:
-          repository: HubWu42/admin
-          path: admin-src
-
-      - name: Checkout user
-        uses: actions/checkout@v4
-        with:
-          repository: HubWu42/user
-          path: user-src
-
+      # ---- Fullstack: admin + user frontends are in this monorepo ----
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -42,13 +30,13 @@ jobs:
           node-version: '24.11.1'
 
       - name: Build admin
-        working-directory: admin-src
+        working-directory: admin
         run: |
           pnpm install --frozen-lockfile
           pnpm run build:fullstack
 
       - name: Build user
-        working-directory: user-src
+        working-directory: user
         run: |
           pnpm install --frozen-lockfile
           pnpm run build
@@ -56,8 +44,8 @@ jobs:
       - name: Embed frontend assets
         run: |
           mkdir -p internal/web/dist
-          cp -r admin-src/dist internal/web/dist/admin
-          cp -r user-src/dist  internal/web/dist/user
+          cp -r admin/dist internal/web/dist/admin
+          cp -r user/dist  internal/web/dist/user
 
       # ---- Docker build & push ----
       - name: Set up QEMU

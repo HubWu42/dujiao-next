@@ -54,6 +54,10 @@ spec:
                 secretKeyRef: { name: dujiao-next-secrets, key: BOOTSTRAP_DEFAULT_ADMIN_PASSWORD }
             - name: SERVER_MODE
               value: release
+            # 不易猜的后台路径（web.admin_path），沿用线上原值；没配时回落到默认 /admin
+            - name: WEB_ADMIN_PATH
+              valueFrom:
+                secretKeyRef: { name: dujiao-next-secrets, key: WEB_ADMIN_PATH, optional: true }
             - name: TZ
               value: Asia/Shanghai
           readinessProbe:

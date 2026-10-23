@@ -1,5 +1,5 @@
 # 测试环境：家里测试集群，跟本仓 main。镜像版本由 CI 在合并到 main 后写回这里（.github/workflows/docker-build.yml）。
-# PG、Redis 在生产集群，经 Tailscale 由测试集群里的 platform/pg-cn、platform/redis-cn 转过去（工作空间 deploy/k8s/platform-access）。
+# PG、Redis 在本集群 data-cn 里，与生产同名；测试与生产只在库名和账号上不同（ADR-0005）。
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -11,12 +11,12 @@ configMapGenerator:
   - name: dujiao-next-env
     behavior: merge
     literals:
-      - DB_HOST=pg-cn.platform.svc.cluster.local
+      - DB_HOST=pg-cn-rw.data-cn.svc.cluster.local
       - DB_USER=dujiao_test
       - DB_NAME=dujiao_test
-      - REDIS_HOST=redis-cn.platform.svc.cluster.local
+      - REDIS_HOST=redis.data-cn.svc.cluster.local
       - REDIS_DB=5
-      - QUEUE_HOST=redis-cn.platform.svc.cluster.local
+      - QUEUE_HOST=redis.data-cn.svc.cluster.local
       - QUEUE_DB=6
 patches:
   - target:

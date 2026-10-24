@@ -4,7 +4,7 @@
 # 由工作空间 deploy/scripts/secrets.js 按 deploy/secrets-map.yaml 推进集群。
 #
 # 数据库从 SQLite 换成区域 PG（D17：每个服务 <服务>_test / <服务>_prod 两个库）。
-# 现网 SQLite 里的数据怎么搬到 PG 归 GS-528（数据迁移），本单元只声明目标状态。
+# 现网 SQLite 里的数据怎么搬到 PG 不在本单元，本单元只声明目标状态。
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: dujiao-next
